@@ -36,7 +36,7 @@ alert($.trim(message));
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import magento2 from 'rollup-plugin-magento2;
+import magento2 from 'rollup-plugin-magento2';
 
 export default {
   input: './assets/js/main.js',
@@ -74,13 +74,7 @@ define(['jquery'], function($) {
 
 ### Local import
 
-**sayHello.js**
-
-```javascript
-// File assets/js/sayHello.js
-const sayHello = message => alert( message );
-export default sayHello;
-```
+This example shows a simple local module and how to import by name from virtual modules.
 
 **main.js**
 
@@ -95,6 +89,13 @@ export default {
 };
 ```
 
+**sayHello.js**
+
+```javascript
+// File assets/js/sayHello.js
+const sayHello = message => alert( message );
+export default sayHello;
+```
 **rollup.config.js**
 
 ```javascript
@@ -102,7 +103,7 @@ export default {
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import magento2 from 'rollup-plugin-magento2;
+import magento2 from 'rollup-plugin-magento2';
 
 export default {
   input: './assets/js/main.js',
