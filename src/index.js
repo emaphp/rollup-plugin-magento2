@@ -1,6 +1,6 @@
 const PREFIX = `\0magento2:`;
 
-const magento2 = opts => {
+module.exports = opts => {
   const options = Object.assign({virtual: []}, opts);
   const importDcl = {};
 
@@ -97,5 +97,3 @@ const magento2 = opts => {
     }
   };
 };
-
-export default magento2;
