@@ -2,7 +2,7 @@
 
 Simple ES module bundling for Magento 2.
 
-**WARNING**: This plugin is purely experimental and should not be used in production environments.
+**WARNING**: This plugin is purely experimental and should not be used on production environments.
 
 ## About
 
@@ -10,11 +10,13 @@ This is a plugin for [Rollup](https://rollupjs.org/) that converts your Javascri
 
 ## How it works
 
-This plugin works by virtualizing modules that correspond to modules already included on Magento 2 (ex: `jquery`, `underscore**, etc.**. You still need to specify which modules are virtual though. The final result is a script compatible with RequireJS that can be easily deployed in Magento 2.
+This plugin works by virtualizing modules that correspond to modules already included on Magento 2 (ex: `jquery`, `underscore`, etc.). You still need to specify which modules are virtual though. The final result is a script compatible with RequireJS that can be easily deployed in Magento 2.
 
 ## Examples
 
 ### Simple module
+
+This example shows how to declare `jquery` as a virtual module. When a module is declared as virtual, the plugin will append it to the dependency list. The resulting script will also include it as an argument of the definition function.
 
 **main.js**
 
