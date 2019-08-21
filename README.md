@@ -2,6 +2,8 @@
 
 Simple ES module bundling for Magento 2.
 
+**WARNING**: This plugin is purely experimental and should not be used in production environments.
+
 ## About
 
 This is a plugin for [Rollup](https://rollupjs.org/) that converts your Javascript modules written in ES6/ES7 to modules compatible with RequireJS.
@@ -30,7 +32,6 @@ alert($.trim(message));
 ```javascript
 // File: rollup.config.js
 import babel from 'rollup-plugin-babel';
-import vue from 'rollup-plugin-vue';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import magento2 from 'rollup-plugin-magento2;
@@ -61,11 +62,11 @@ Result:
 
 ```javascript
 define(['jquery'], function($) {
-	'use strict';
+  'use strict';
 
-	var rollup = "Rollup";
-	var message = "   Hello from ".concat(rollup, "!!!   ");
-	alert($.trim(message));
+  var rollup = "Rollup";
+  var message = "   Hello from ".concat(rollup, "!!!   ");
+  alert($.trim(message));
 });
 ```
 
@@ -97,7 +98,6 @@ export default {
 ```javascript
 // File: rollup.config.js
 import babel from 'rollup-plugin-babel';
-import vue from 'rollup-plugin-vue';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import magento2 from 'rollup-plugin-magento2;
