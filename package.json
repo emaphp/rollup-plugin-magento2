@@ -2,9 +2,12 @@
   "name": "rollup-plugin-magento2",
   "version": "0.1.1",
   "description": "Simple ES module bundling for Magento 2",
-  "main": "src/index.js",
+  "main": "dist/rollup-plugin-magento2.cjs.js",
+  "module": "dist/rollup-plugin-magento2.es.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "build": "rollup -c",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/emaphp/rollup-plugin-magento2/issues"
   },
-  "homepage": "https://github.com/emaphp/rollup-plugin-magento2#readme"
+  "homepage": "https://github.com/emaphp/rollup-plugin-magento2#readme",
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "mocha": "^6.2.1",
+    "rollup": "^1.23.1",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  }
 }
