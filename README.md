@@ -2,31 +2,29 @@
 
 Simple ES module bundling for Magento 2.
 
-**WARNING**: This plugin is purely experimental and should not be used on production environments.
-
 ## About
 
 This is a plugin for [Rollup](https://rollupjs.org/) that converts your Javascript modules written in ES6/ES7 to modules compatible with RequireJS.
 
 ## How it works
 
-This plugin works by virtualizing modules that correspond to modules already included on Magento 2 (ex: `jquery`, `underscore`, etc.). You still need to specify which modules are virtual though. The final result is a script compatible with RequireJS that can be easily deployed in Magento 2.
+This plugin works by virtualizing modules that correspond to modules already included in Magento 2 (ex: `jquery`, `underscore`, etc.). It does it by replacing the modules you declare as virtual with an additional argument to the `define` function. The final result is a script compatible with RequireJS that can be easily deployed in Magento 2.
 
 ## Examples
 
 ### Simple module
 
-This example shows how to declare `jquery` as a virtual module. When a module is declared as virtual, the plugin will append it to the dependency list. The resulting script will also include it as an argument of the definition function.
+This example shows how to declare `underscore` as a virtual module. When a module is declared as virtual, the plugin will append it to the dependency list. The resulting script will also include it as an argument of the callback function.
 
 **main.js**
 
 ```javascript
 // File: assets/js/main.js
-import $ from 'jquery';
+import _ from 'underscore';
 
-const rollup = "Rollup";
-const message = `   Hello from ${rollup}!!!   `;
-alert($.trim(message));
+const rollup = "Rollup & Magento";
+const message = `Hello from ${_.escape(rollup)}!!!`;
+alert(message);
 ```
 
 **rollup.config.js**
@@ -53,7 +51,7 @@ export default {
     commonjs(),
     magento2({
       virtual: [
-        'jquery'
+        'underscore'
       ]
     }),
   ]
@@ -63,12 +61,12 @@ export default {
 Result:
 
 ```javascript
-define(['jquery'], function($) {
+define(['underscore'], function(_) {
   'use strict';
 
-  var rollup = "Rollup";
-  var message = "   Hello from ".concat(rollup, "!!!   ");
-  alert($.trim(message));
+  var rollup = "Rollup & Magento";
+  var message = "Hello from ".concat(_.escape(rollup), "!!!");
+  alert(message);
 });
 ```
 
@@ -139,20 +137,21 @@ define(['underscore'], function(underscore) {
     return alert(message);
   };
 
-  var local_import = {
+  var bundle = {
     sayHello: debounce(sayHello, 300)
   };
 
-  return local_import;
+  return bundle;
 });
 ```
 
 ## TODOs
 
- * Add tests.
+ * Support additional options.
 
 ## Changelog
 
+ * v0.1.1: Tests.
  * v0.1.0: First release.
 
 ## License

@@ -35,6 +35,32 @@ describe('rollup-plugin-magento2', () => {
     assert.equal(resolved, '\0magento2:jquery');
 	});
 
+  it('can translate trivial import declaration', () => {
+    return rollup({
+      input: './test/files/simple-import.js',
+      plugins: [
+        babel(),
+        resolve(),
+        commonjs(),
+        magento2({
+          virtual: [
+            'underscore'
+          ]
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/simple-import.output.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
+
   it('can translate single default import declaration', () => {
     return rollup({
       input: './test/files/default-single-import.js',
