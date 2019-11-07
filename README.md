@@ -8,13 +8,13 @@ This is a plugin for [Rollup](https://rollupjs.org/) that converts your Javascri
 
 ## How it works
 
-This plugin works by virtualizing modules that correspond to modules already included in Magento 2 (ex: `jquery`, `underscore`, etc.). It does it by replacing the modules you declare as virtual with an additional argument to the `define` function. The final result is a script compatible with RequireJS that can be easily deployed in Magento 2.
+This plugin works by virtualizing modules that correspond to scripts already included on Magento 2 (ex: `jquery`, `underscore`, etc.). Each virtual plugin will be listed as an additional dependency on the `define` callback. The final result is a script compatible with RequireJS that can be easily deployed in Magento 2.
 
 ## Examples
 
 ### Simple module
 
-This example shows how to declare `underscore` as a virtual module. When a module is declared as virtual, the plugin will append it to the dependency list. The resulting script will also include it as an argument of the callback function.
+This example shows how to declare `underscore` as a virtual module. When a module is declared as virtual, the plugin will append it to the dependency list.
 
 **main.js**
 
@@ -58,7 +58,7 @@ export default {
 };
 ```
 
-Result:
+**Result**
 
 ```javascript
 define(['underscore'], function(_) {
@@ -72,14 +72,12 @@ define(['underscore'], function(_) {
 
 ### Local import
 
-This example shows a simple local module and how to import by name from virtual modules.
-
 **main.js**
 
 ```javascript
 // File assets/js/main.js
-import { debounce } from 'underscore';
 import sayHello from './sayHello';
+import { debounce } from 'underscore';
 
 // Build a debounced version of sayHello
 export default {
@@ -125,7 +123,7 @@ export default {
 };
 ```
 
-Result:
+**Result**
 
 ```javascript
 define(['underscore'], function(underscore) {
@@ -145,12 +143,72 @@ define(['underscore'], function(underscore) {
 });
 ```
 
-## TODOs
+### Virtual directory
 
- * Support additional options.
+In case your module requires a lof of dependencies you can instead define a *virtual directory*. Any import prefixed with that name will be considered a Magento Javascript module.
+
+**main.js**
+
+```javascript
+// File assets/js/main.js
+import $ from '@magento/jquery';
+import { random } from '@magento/underscore';
+
+export default {
+  trim: $.trim,
+  rand: random
+};
+```
+
+**rollup.config.js**
+
+```javascript
+// File: rollup.config.js
+import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
+import magento2 from 'rollup-plugin-magento2';
+
+export default {
+  input: './assets/js/main.js',
+  output: {
+    file: './view/frontend/web/js/main.js',
+    format: 'iife',
+    name: 'bundle',
+  },
+  plugins: [
+    babel({
+      exclude: 'node_modules/**'
+    }),
+    resolve(),
+    commonjs(),
+    magento2({
+      virtualDir: 'magento'
+    }),
+  ]
+};
+```
+
+**Result**
+
+```javascript
+define(['jquery', 'underscore'], function($, underscore) {
+  'use strict';
+
+  var random = underscore.random;
+
+  var bundle = {
+    trim: $.trim,
+    rand: random
+  };
+
+  return bundle;
+});
+```
 
 ## Changelog
 
+ * v1.0: Added: Support for *virtualDir*.
  * v0.1.1: Tests.
  * v0.1.0: First release.
 
