@@ -1,15 +1,15 @@
 const PREFIX = `\0magento2:`;
 
 module.exports = opts => {
-  const options = Object.assign({virtual: []}, opts);
+  const options = Object.assign({virtual: [], virtualDir: false}, opts);
   const importDcl = {};
+  const virtualDirRegex = options.virtualDir && new RegExp(`^@${options.virtualDir}\/`);
 
   const formatOutput = (src, start, end) => {
-    const keys = Object.keys(importDcl).filter(k => opts.virtual.includes(k));
-    const deps = keys.map(m => `'${m}'`);
+    const keys = Object.keys(importDcl).filter(k => isVirtual(k));
+    const deps = keys.map(m => `'${stripVirtual(m)}'`);
     const args = keys.map(k => importDcl[k].default || k).join(',');
-    const expr = `function(${args}) ${src.slice(start, end)}`;
-    return `define([${deps.join(', ')}], ${expr});`;
+    return `define([${deps.join(', ')}], function(${args}) ${src.slice(start, end)});`;
   };
 
   const buildVirtualModule = id => {
@@ -29,11 +29,23 @@ module.exports = opts => {
     };
   };
 
+  const isVirtualDir = id => {
+    return virtualDirRegex && virtualDirRegex.test(id);
+  };
+
+  const isVirtual = source => {
+    return isVirtualDir(source) || options.virtual.includes(source);
+  };
+
+  const stripVirtual = id => {
+    return isVirtualDir(id) ? id.substr(id.indexOf('/') + 1) : id;
+  };
+
   return {
     name: 'magento2',
 
     resolveId (id, importer) {
-      if (options.virtual.includes(id)) {
+      if (isVirtual(id)) {
         return PREFIX + id;
       }
     },
@@ -76,8 +88,8 @@ module.exports = opts => {
         if (node.type == 'ImportDeclaration') {
           const source = node.source.value;
 
-          // Ignore if not listed as virtual
-          if (!options.virtual.includes(source)) {
+          // Ignore if not virtual
+          if (!isVirtual(source)) {
             continue;
           }
 

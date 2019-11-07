@@ -191,4 +191,129 @@ describe('rollup-plugin-magento2', () => {
         return Promise.resolve(assert.equal(actual, expected));
       });
   });
+
+  /**
+   * Virtualdir
+   */
+
+  it('can translate default import from virtualdir', () => {
+    return rollup({
+      input: './test/files/default-import-from-virtualdir.js',
+      plugins: [
+        resolve(),
+        commonjs(),
+        magento2({
+          virtualDir: 'magento'
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+          name: 'defaultImportFromVirtualdir'
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/default-import-from-virtualdir.out.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
+
+  it('can translate multiple default imports from virtualdir', () => {
+    return rollup({
+      input: './test/files/default-multiple-import-from-virtualdir.js',
+      plugins: [
+        resolve(),
+        commonjs(),
+        magento2({
+          virtualDir: 'magento'
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+          name: 'defaultMultipleImportFromVirtualdir'
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/default-multiple-import-from-virtualdir.out.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
+
+  it('can translate non default import from virtualdir', () => {
+    return rollup({
+      input: './test/files/non-default-import-from-virtualdir.js',
+      plugins: [
+        resolve(),
+        commonjs(),
+        magento2({
+          virtualDir: 'magento'
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+          name: 'nonDefaultImportFromVirtualdir'
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/non-default-import-from-virtualdir.out.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
+
+  it('can translate non default multiple import from virtualdir', () => {
+    return rollup({
+      input: './test/files/non-default-multiple-import-from-virtualdir.js',
+      plugins: [
+        resolve(),
+        commonjs(),
+        magento2({
+          virtualDir: 'magento'
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+          name: 'nonDefaultMultipleImportFromVirtualdir'
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/non-default-multiple-import-from-virtualdir.out.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
+
+  it('can translate mixed imports', () => {
+    return rollup({
+      input: './test/files/mixed-imports.js',
+      plugins: [
+        resolve(),
+        commonjs(),
+        magento2({
+          virtualDir: 'magento',
+          virtual: [ 'underscore' ]
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+          name: 'multipleImports'
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/mixed-imports.out.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
 });
