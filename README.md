@@ -208,9 +208,21 @@ define(['jquery', 'underscore'], function($, underscore) {
 
 ## Changelog
 
- * v1.0: Added: Support for *virtualDir*.
- * v0.1.1: Tests.
- * v0.1.0: First release.
+### v1.0.1
+
+Fixed: Destructured imports using *virtualDir*.
+
+### v1.0
+
+Added: Support for *virtualDir*.
+
+### v0.1.1
+
+Added: Tests.
+
+### v0.1
+
+First release
 
 ## License
 
