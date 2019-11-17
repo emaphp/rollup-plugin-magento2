@@ -8,12 +8,12 @@ module.exports = opts => {
   const formatOutput = (src, start, end) => {
     const keys = Object.keys(importDcl).filter(k => isVirtual(k));
     const deps = keys.map(m => `'${stripVirtual(m)}'`);
-    const args = keys.map(k => importDcl[k].default || k).join(',');
+    const args = keys.map(k => importDcl[k].default || stripVirtual(k)).join(',');
     return `define([${deps.join(', ')}], function(${args}) ${src.slice(start, end)});`;
   };
 
   const buildVirtualModule = id => {
-    const defaultName = importDcl[id].default || id;
+    const defaultName = importDcl[id].default || stripVirtual(id);
     const defaultExport = `export default ${defaultName}`;
     const identifiers = importDcl[id].identifiers;
     const exports = identifiers.map(imported => {

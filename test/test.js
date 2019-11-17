@@ -292,6 +292,30 @@ describe('rollup-plugin-magento2', () => {
       });
   });
 
+  it('can translate destructured imports', () => {
+    return rollup({
+      input: './test/files/destructured-import-from-virtualdir.js',
+      plugins: [
+        resolve(),
+        commonjs(),
+        magento2({
+          virtualDir: 'magento',
+        })
+      ],
+    })
+      .then(bundle => {
+        return bundle.generate({
+          format: 'iife',
+          name: 'destructuredImportFromVirtualDir'
+        });
+      })
+      .then(generated => {
+        const actual = generated.output[0].code;
+        const expected = fs.readFileSync('./test/output/destructured-import-from-virtualdir.out.js');
+        return Promise.resolve(assert.equal(actual, expected));
+      });
+  });
+
   it('can translate mixed imports', () => {
     return rollup({
       input: './test/files/mixed-imports.js',
