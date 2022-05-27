@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-magento2",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple ES module bundling for Magento 2",
   "main": "dist/rollup-plugin-magento2.cjs.js",
   "module": "dist/rollup-plugin-magento2.es.js",
