@@ -208,6 +208,10 @@ define(['jquery', 'underscore'], function($, underscore) {
 
 ## Changelog
 
+### v1.0.2
+
+Updated: Bump dependencies.
+
 ### v1.0.1
 
 Fixed: Destructured imports using *virtualDir*.
